@@ -1,55 +1,163 @@
-# Face Detection using Haar Cascades with OpenCV and Matplotlib
 
-## Aim
 
-To write a Python program using OpenCV to perform the following image manipulations:  
-i) Extract ROI from an image.  
-ii) Perform face detection using Haar Cascades in static images.  
-iii) Perform eye detection in images.  
-iv) Perform face detection with label in real-time video from webcam.
+## **📌 Project Overview**
 
-## Software Required
+This project demonstrates **face and eye detection** using **OpenCV's Haar Cascade Classifiers**.
+The script loads grayscale images, resizes them, displays them, and then applies:
 
-- Anaconda - Python 3.7 or above  
-- OpenCV library (`opencv-python`)  
-- Matplotlib library (`matplotlib`)  
-- Jupyter Notebook or any Python IDE (e.g., VS Code, PyCharm)
+* **Face detection** using `haarcascade_frontalface_default.xml`
+* **Eye detection** using `haarcascade_eye.xml`
 
-## Algorithm
+It also includes a final block to run face detection on a custom static image.
 
-### I) Load and Display Images
+---
 
-- Step 1: Import necessary packages: `numpy`, `cv2`, `matplotlib.pyplot`  
-- Step 2: Load grayscale images using `cv2.imread()` with flag `0`  
-- Step 3: Display images using `plt.imshow()` with `cmap='gray'`
+## **📁 Project Structure**
 
-### II) Load Haar Cascade Classifiers
+```
+face_detections.py
+haarcascade_frontalface_default.xml
+haarcascade_eye.xml
+image_01.png
+image_02.png
+image_03.png
+(optional) WIN_20251117_11_34_42_Pro.jpg
+```
 
-- Step 1: Load face and eye cascade XML files 
-### III) Perform Face Detection in Images
+---
 
-- Step 1: Define a function `detect_face()` that copies the input image  
-- Step 2: Use `face_cascade.detectMultiScale()` to detect faces  
-- Step 3: Draw white rectangles around detected faces with thickness 10  
-- Step 4: Return the processed image with rectangles  
+## **🚀 Features**
 
-### IV) Perform Eye Detection in Images
+* Load and display multiple grayscale images.
+* Resize images for uniform appearance.
+* Detect and highlight **faces** using Haar Cascades.
+* Detect and highlight **eyes** using Haar Cascades.
+* Display results using Matplotlib.
+* Accepts & processes custom images.
 
-- Step 1: Define a function `detect_eyes()` that copies the input image  
-- Step 2: Use `eye_cascade.detectMultiScale()` to detect eyes  
-- Step 3: Draw white rectangles around detected eyes with thickness 10  
-- Step 4: Return the processed image with rectangles  
+---
 
-### V) Display Detection Results on Images
+## **🔧 Requirements**
 
-- Step 1: Call `detect_face()` or `detect_eyes()` on loaded images  
-- Step 2: Use `plt.imshow()` with `cmap='gray'` to display images with detected regions highlighted  
+Install required libraries:
 
-### VI) Perform Face Detection on Real-Time Webcam Video
+```bash
+pip install opencv-python matplotlib numpy
+```
 
-- Step 1: Capture video from webcam using `cv2.VideoCapture(0)`  
-- Step 2: Loop to continuously read frames from webcam  
-- Step 3: Apply `detect_face()` function on each frame  
-- Step 4: Display the video frame with rectangles around detected faces  
-- Step 5: Exit loop and close windows when ESC key (key code 27) is pressed  
-- Step 6: Release video capture and destroy all OpenCV windows  
+If running in **Google Colab**, the script also uses:
+
+```python
+from google.colab.patches import cv2_imshow
+```
+
+---
+
+## **📥 How It Works**
+
+### **1. Load Images**
+
+The code reads 3 sample images in grayscale:
+
+```python
+img1 = cv2.imread("/content/image_01.png", cv2.IMREAD_GRAYSCALE)
+```
+
+### **2. Display Images**
+
+Using Matplotlib:
+
+```python
+plt.imshow(img1, cmap="gray")
+```
+
+### **3. Resize Images**
+
+Each image is resized to 600×600 pixels:
+
+```python
+resized1 = cv2.resize(img1, (600, 600))
+```
+
+### **4. Face Detection**
+
+Using Haar Cascade:
+
+```python
+face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+```
+
+A function is defined:
+
+```python
+def detect_face(img):
+    face_rect = face_cascade.detectMultiScale(img)
+    for (x,y,w,h) in face_rect:
+        cv2.rectangle(img, (x,y), (x+w, y+h), (255,255,0), 10)
+    return img
+```
+
+### **5. Eye Detection**
+
+Using another cascade:
+
+```python
+eye_cascade = cv2.CascadeClassifier("haarcascade_eye.xml")
+```
+
+```python
+def detect_eye(img):
+    rect = eye_cascade.detectMultiScale(img)
+```
+
+### **6. Custom Image Detection**
+
+You can replace this path with any image:
+
+```python
+image_path = "/content/WIN_20251117_11_34_42_Pro.jpg"
+```
+
+---
+
+## **📷 Output**
+
+The script displays:
+
+* Original images
+* Resized images
+* Face detection bounding boxes
+* Eye detection bounding boxes
+
+Each output is shown using Matplotlib or `cv2_imshow()` (for Colab).
+
+---
+
+## **📝 Notes**
+
+* Haar Cascades work best on clear, frontal faces.
+* Lighting and image quality affect accuracy.
+* Cascades must be placed in the same folder as the script.
+
+---
+
+## **▶️ Running the Code**
+
+Run the script:
+
+```bash
+python face_detections.py
+```
+
+To test with another image, modify:
+
+```python
+image_path = "/content/your_image.jpg"
+```
+
+---
+
+## **📚 References**
+
+* OpenCV documentation
+* Haar Cascade classifiers dataset
